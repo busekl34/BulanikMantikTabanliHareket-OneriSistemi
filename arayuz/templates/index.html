@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obezite ve Hareket Öneri Sistemi</title>
+<style>
+    body {
+        font-family: Arial;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+.phone-frame {
+    width: 360px;
+    height: 720px;
+    background: #fff;
+    border: 16px solid #333;
+    border-radius: 36px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+
+    overflow-y: auto;   /* ✅ KRİTİK SATIR */
+}
+    .phone-frame::-webkit-scrollbar {
+    width: 0;
+}
+
+
+
+    .phone-notch {
+        width: 60px;
+        height: 10px;
+        background: #333;
+        border-radius: 10px;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    h1 {
+        font-size: 18px;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    label {
+        margin-top: 10px;
+    }
+
+    input {
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+     button {
+        margin-top: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 12px;
+        background-color:#C13584;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+   .title {
+    text-align: center;
+    font-size: 18px;
+    color: #1F2937; /* koyu ama yumuşak */
+    }
+
+   .form label {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #374151;
+   }
+
+/* Input alanları */
+    .input {
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    background-color: #FFF1F2; /* soft pastel pembe */
+    font-size: 14px;
+    transition: all 0.3s ease;
+   }
+
+/* Input focus (tıklanınca) */
+    .input:focus {
+    outline: none;
+    border-color: #C13584;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 2px rgba(193,53,132,0.15);
+    }
+
+/* Hesapla butonu – Instagram degrade */
+    .btn {
+    margin-top: 24px;
+    padding: 12px;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFFFFF;
+    cursor: pointer;
+    background: linear-gradient(135deg,
+        #833AB4,
+        #C13584,
+        #E1306C,
+        #F56040
+    );
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover efekti */
+   .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+   }
+
+/* Sonuç kutusu */
+    .result {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ECFDF5, #E0F2FE);
+    text-align: center;
+    color: #065F46;
+    font-size: 14px;
+   }
+/* Ana büyük görsel */
+.main-illustration {
+    width: 140px;          /* telefon için ideal */
+    max-width: 100%;
+    display: block;
+    margin: 10px auto 8px;
+}
+
+/* Küçük galeri alanı */
+.gallery {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+/* Küçük ikonlar */
+.gallery img {
+    width: 42px;
+    height: 42px;
+    padding: 6px;
+    border-radius: 12px;
+    background-color: #FFF1F2;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Seçili ikon */
+.gallery img.active {
+    background: linear-gradient(135deg,
+        #833AB4,
+        #C13584,
+        #E1306C,
+        #F56040
+    );
+}
+
+/* Hover efekti */
+.gallery img:hover {
+    transform: scale(1.08);
+}
+
+
+</style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+        
+<h1 class="title"> 🏃‍♂️ Bulanık Mantık Tabanlı Hareket Öneri Sistemi 📈 </h1>
+
+        
+  <img id="mainImage" src="{{ url_for('static', filename='images/weighing-scale-svgrepo-com.svg') }}" alt="Ana Görsel" class="main-illustration" />
+
+  <!-- Küçük görseller galerisi -->
+  <div class="gallery">
+    <img src="{{ url_for('static', filename='images/duration-svgrepo-com.svg') }}" alt="Görsel 1" class="active" onclick="changeImage(this)" />
+    <img src="{{ url_for('static', filename='images/fast-food-hamburguer-svgrepo-com.svg') }}" alt="Görsel 2" onclick="changeImage(this)" />
+    <img src="{{ url_for('static', filename='images/woman-mountain-biking-medium-dark-skin-tone-svgrepo-com.svg') }}" alt="Görsel 3" onclick="changeImage(this)" />
+  </div>
+
+        
+<form method="POST" class="form">
+    <label>Boy (cm):
+        <input class="input" type="number" name="boy" step="0.1" required>
+    </label>
+
+    <label>Kilo (kg):
+        <input class="input" type="number" name="kilo" step="0.1" required>
+    </label>
+
+    <label>Fast-food oranı (%):
+        <input class="input" type="number" name="fastfood" step="0.1" required>
+    </label>
+
+    <label>Günlük aktivite (dk):
+        <input class="input" type="number" name="aktivite" step="0.1" required>
+    </label>
+
+    <button class="btn" type="submit">Hesapla</button>
+</form>
+
+{% if sonuc %}
+<div class="result">
+    <p><strong>BMI:</strong> {{ bmi | round(2) }}</p>
+    <p><strong>Önerilen hareket süresi:</strong> {{ sonuc | round(1) }} dk</p>
+</div>
+{% endif %}
+
+    </div>
+<script>
+function changeImage(el) {
+    document.getElementById("mainImage").src = el.src;
+
+    document.querySelectorAll(".gallery img")
+        .forEach(img => img.classList.remove("active"));
+
+    el.classList.add("active");
+}
+</script>
+</body>
+</html>
